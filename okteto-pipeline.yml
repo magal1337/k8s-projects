@@ -1,2 +1,2 @@
 deploy:
-  - kubectl create -f cronJob.yaml
+  - kubectl create -f OrlandoFlights/cronJob.yaml
