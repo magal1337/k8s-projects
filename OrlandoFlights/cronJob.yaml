@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: BotFlights
+  name: bot-flights
 spec:
   schedule: "20 02 * * *"
   jobTemplate:
@@ -12,3 +12,4 @@ spec:
           - name: bot-flights
             image: lferreira1337/automation-projects:botflights-1.0.3
             imagePullPolicy: IfNotPresent
+        restartPolicy: Never
