@@ -9,6 +9,6 @@ spec:
       template:
         spec:
           containers:
-          - name: BotFlights
+          - name: bot-flights
             image: lferreira1337/automation-projects:botflights-1.0.3
             imagePullPolicy: IfNotPresent
