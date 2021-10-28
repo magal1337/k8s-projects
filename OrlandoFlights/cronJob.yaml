@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: BotFlights
+spec:
+  schedule: "10 02 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: BotFlights
+            image: lferreira1337/automation-projects:botflights-1.0.3
+            imagePullPolicy: IfNotPresent
