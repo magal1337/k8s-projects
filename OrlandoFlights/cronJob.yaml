@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: bot-flights
 spec:
-  schedule: "20 02 * * *"
+  schedule: "25 02 * * *"
   jobTemplate:
     spec:
       template:
@@ -12,4 +12,5 @@ spec:
           - name: bot-flights
             image: lferreira1337/automation-projects:botflights-1.0.3
             imagePullPolicy: IfNotPresent
-        restartPolicy: Never
+          restartPolicy: Never
+       
