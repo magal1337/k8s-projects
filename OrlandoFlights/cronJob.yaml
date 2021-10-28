@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: BotFlights
 spec:
-  schedule: "10 02 * * *"
+  schedule: "20 02 * * *"
   jobTemplate:
     spec:
       template:
