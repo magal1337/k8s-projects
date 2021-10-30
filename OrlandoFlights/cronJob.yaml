@@ -3,10 +3,10 @@ kind: CronJob
 metadata:
   name: bot-flights
 spec:
-  schedule: "03 20 * * *"
+  schedule: "0 0-23/2 * * *"
   jobTemplate:
     spec:
-      parallelism: 3
+      parallelism: 10
       template:
         spec:
           containers:
