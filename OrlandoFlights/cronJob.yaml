@@ -4,10 +4,10 @@ metadata:
   name: bot-flights
 spec:
   schedule: "0 0-23/2 * * *"
-  parallelism: 8
-  completions: 1
   jobTemplate:
     spec:
+      parallelism: 8
+      completions: 1
       template:
         spec:
           containers:
