@@ -3,10 +3,10 @@ kind: CronJob
 metadata:
   name: bot-flights
 spec:
-  schedule: "0 0-23/2 * * *"
+  schedule: "47 19 * * *"
   jobTemplate:
     spec:
-      parallelism: 8
+      parallelism: 3
       completions: 1
       template:
         spec:
@@ -15,4 +15,5 @@ spec:
             image: lferreira1337/automation-projects:botflights-1.0.7
             imagePullPolicy: IfNotPresent
           restartPolicy: OnFailure
+  concurrencyPolicy: Allow        
        
