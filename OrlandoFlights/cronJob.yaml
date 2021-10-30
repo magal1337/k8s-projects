@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: bot-flights
-            image: lferreira1337/automation-projects:botflights-1.0.4
+            image: lferreira1337/automation-projects:botflights-1.0.5
             imagePullPolicy: IfNotPresent
           restartPolicy: OnFailure
        
