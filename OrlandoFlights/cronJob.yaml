@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: bot-flights
 spec:
-  schedule: "0 0-23/2 * * *"
+  schedule: "8 23 * * *"
   failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
