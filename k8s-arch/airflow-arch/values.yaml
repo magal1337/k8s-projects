@@ -278,8 +278,8 @@ data:
 
   # Otherwise pass connection values in
   metadataConnection:
-    user: bdas_k8s
-    pass: NpY%1d#%aa5c
+    user: postgres
+    pass: postgres
     protocol: postgresql
     host: ~
     port: 5432
@@ -415,9 +415,9 @@ workers:
 
   persistence:
     # Enable persistent volumes
-    enabled: true
+    enabled: false
     # Volume size for worker StatefulSet
-    size: 1Gi
+    size: 100Gi
     # If using a custom storageClass, pass name ref to all statefulSets here
     storageClassName:
     # Execute init container to chown log directory.
@@ -699,11 +699,11 @@ webserver:
   defaultUser:
     enabled: true
     role: Admin
-    username: admin
-    email: admin@example.com
-    firstName: admin
-    lastName: user
-    password: admin
+    username: magal1337
+    email: lucas.m.e.ferreira@gmail.com
+    firstName: lucas
+    lastName: ferreira
+    password: vTa@6jYVRB&L
 
   # Launch additional containers into webserver.
   extraContainers: []
@@ -1302,15 +1302,15 @@ dags:
     # ssh examples ssh://git@github.com/apache/airflow.git
     # git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    repo: https://github.com/apache/airflow.git
-    branch: v2-1-stable
+    repo: https://github.com/magal1337/k8s-projects.git
+    branch: chapter-airflow
     rev: HEAD
     depth: 1
     # the number of consecutive failures allowed before aborting
     maxFailures: 0
     # subpath within the repo where dags are located
     # should be "" if dags are at repo root
-    subPath: "tests/dags"
+    subPath: "k8s-arch/airflow-arch/dags"
     # if your repo needs a user name password
     # you can load them to a k8s secret like the one below
     #   ---

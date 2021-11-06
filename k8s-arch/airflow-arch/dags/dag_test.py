@@ -8,7 +8,7 @@ def print_hello():
 
 dag = DAG('hello_world', description='Hello World DAG',
           schedule_interval='0 12 * * *',
-          start_date=datetime(2021, 11, 06), catchup=False)
+          start_date="2021-11-05", catchup=False)
 
 hello_operator = PythonOperator(task_id='hello_task', python_callable=print_hello, dag=dag)
 
