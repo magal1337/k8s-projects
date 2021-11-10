@@ -37,13 +37,13 @@ gid: 0
 airflowHome: /opt/airflow
 
 # Default airflow repository -- overrides all the specific images below
-defaultAirflowRepository: apache/airflow
+defaultAirflowRepository: lferreira1337/big-data-apps
 
 # Default airflow tag to deploy
-defaultAirflowTag: "2.1.4"
+defaultAirflowTag: "airflow2-1.0.8"
 
 # Airflow version (Used to make some decisions based on Airflow Version being deployed)
-airflowVersion: "2.1.4"
+airflowVersion: "2.1.0"
 
 # Images
 images:
@@ -198,7 +198,7 @@ rbac:
 
 # Airflow executor
 # Options: LocalExecutor, CeleryExecutor, KubernetesExecutor, CeleryKubernetesExecutor
-executor: "CeleryExecutor"
+executor: "KubernetesExecutor"
 
 # If this is true and using LocalExecutor/KubernetesExecutor/CeleryKubernetesExecutor, the scheduler's
 # service account will have access to communicate with the api-server and launch pods.
@@ -415,7 +415,7 @@ workers:
 
   persistence:
     # Enable persistent volumes
-    enabled: false
+    enabled: true
     # Volume size for worker StatefulSet
     size: 100Gi
     # If using a custom storageClass, pass name ref to all statefulSets here
@@ -648,7 +648,7 @@ webserver:
     timeoutSeconds: 30
     failureThreshold: 20
     periodSeconds: 5
-
+  
   readinessProbe:
     initialDelaySeconds: 15
     timeoutSeconds: 30
@@ -696,6 +696,7 @@ webserver:
   #     memory: 128Mi
 
   # Create initial user.
+  # not working leave as admin admin and create after deploy
   defaultUser:
     enabled: true
     role: Admin
@@ -1195,6 +1196,7 @@ postgresql:
 #
 # Do not set config containing secrets via plain text values, use Env Var or k8s secret object
 # yamllint disable rule:line-length
+
 config:
   core:
     dags_folder: '{{ include "airflow_dags" . }}'
@@ -1208,6 +1210,7 @@ config:
   api:
     auth_backend: airflow.api.auth.backend.deny_all
   logging:
+    base_log_folder: /opt/airflow/logs
     remote_logging: '{{- ternary "True" "False" .Values.elasticsearch.enabled }}'
     colored_console_log: 'False'
   metrics:
@@ -1364,9 +1367,9 @@ logs:
     # Enable persistent volume for storing logs
     enabled: false
     # Volume size for logs
-    size: 100Gi
+    size: 1Gi
     # If using a custom storageClass, pass name here
-    storageClassName:
+    storageClassName: do-block-storage
     ## the name of an existing PVC to use
-    existingClaim:
+    existingClaim: airflow-logs
 
