@@ -22,6 +22,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={{var.value.alpha_vantage_secret}}"
     response = requests.get(url, stream=True)
     data = io.BytesIO(response.content)
+    content_length = int(response.headers["Content-Length"])
     client = Minio(
         "admin",
         access_key="{{var.value.minio_key}}",
@@ -32,7 +33,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
         'stock-market',
         f'lz/{symbol}-{today}.json',
         data,
-        length=-1,
+        length=content_length,
         content_type='application/json'
     )
 
