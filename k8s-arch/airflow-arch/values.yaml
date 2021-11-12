@@ -40,7 +40,7 @@ airflowHome: /opt/airflow
 defaultAirflowRepository: lferreira1337/big-data-apps
 
 # Default airflow tag to deploy
-defaultAirflowTag: "airflow2-1.1.0"
+defaultAirflowTag: "airflow2-1.1.1"
 
 # Airflow version (Used to make some decisions based on Airflow Version being deployed)
 airflowVersion: "2.1.0"

@@ -29,6 +29,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
         'stock-market',
         f'lz/{symbol}-{today}.json',
         bytes(json.dumps(data).encode('UTF-8')),
+        length=-1,
         content_type='application/json'
     )
 
