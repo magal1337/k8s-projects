@@ -24,7 +24,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
     data = io.BytesIO(response.content)
     content_length = data.getbuffer().nbytes
     client = Minio(
-        "admin",
+        "http://minio.storage-layer.svc.cluster.local:9000",
         access_key="{{var.value.minio_key}}",
         secret_key="{{var.value.minio_secret_key}}",
     )
