@@ -6,6 +6,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 import io
 import requests
+import logging
 
 
 DAG_ID='stock-mkt-analytics'                                                                                                                                                                                
@@ -29,6 +30,8 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
         secret_key="{{var.value.minio_secret_key}}",
         secure=False
     )
+    logging.info("{{var.value.minio_key}}")
+    logging.info("{{var.value.minio_secret_key}}")
     today = datetime.today().strftime('%Y-%m-%d')
     return client.put_object(
         'stock-market',
