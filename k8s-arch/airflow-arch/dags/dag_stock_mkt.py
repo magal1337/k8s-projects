@@ -7,6 +7,7 @@ from airflow.operators.python_operator import PythonOperator
 import io
 import requests
 import logging
+from airflow.models import Variable
 
 
 DAG_ID='stock-mkt-analytics'                                                                                                                                                                                
@@ -19,19 +20,22 @@ default_args = {
 'tags': ['STOCK','API-REST'],
 }
 
+api_token = Variable.get("alpha_vantage_secret")
+minio_id = Variable.get("minio_key")
+minio_key = Variable.get("minio_secret_key")
+
 def get_stock_mkt_data_and_send_to_s3(symbol):
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={{var.value.alpha_vantage_secret}}"
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={api_token}"
     response = requests.get(url, stream=True)
     data = io.BytesIO(response.content)
     content_length = data.getbuffer().nbytes
     client = Minio(
         "minio.storage-layer.svc.cluster.local:9000",
-        access_key="{{var.value.minio_key}}",
-        secret_key="{{var.value.minio_secret_key}}",
+        access_key=f"{minio_id}",
+        secret_key=f"{minio_key}",
         secure=False
     )
-    logging.info("{{var.value.minio_key}}")
-    logging.info("{{var.value.minio_secret_key}}")
+    
     today = datetime.today().strftime('%Y-%m-%d')
     return client.put_object(
         'stock-market',
