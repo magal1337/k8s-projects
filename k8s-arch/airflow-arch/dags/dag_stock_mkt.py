@@ -27,6 +27,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
         "minio.storage-layer.svc.cluster.local:9000",
         access_key="{{var.value.minio_key}}",
         secret_key="{{var.value.minio_secret_key}}",
+        secure=False
     )
     today = datetime.today().strftime('%Y-%m-%d')
     return client.put_object(
