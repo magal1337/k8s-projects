@@ -20,11 +20,11 @@ default_args = {
 'tags': ['STOCK','API-REST'],
 }
 
-api_token = Variable.get("alpha_vantage_secret")
-minio_id = Variable.get("minio_key")
-minio_key = Variable.get("minio_secret_key")
 
 def get_stock_mkt_data_and_send_to_s3(symbol):
+    api_token = Variable.get("alpha_vantage_secret")
+    minio_id = Variable.get("minio_key")
+    minio_key = Variable.get("minio_secret_key")
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={api_token}"
     response = requests.get(url, stream=True)
     data = io.BytesIO(response.content)
