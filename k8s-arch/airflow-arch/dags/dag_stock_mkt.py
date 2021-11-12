@@ -1,6 +1,6 @@
 import requests
 import json
-import boto3  
+from minio import Minio
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
@@ -19,13 +19,20 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={{var.value.alpha_vantage_secret}}"
     response = requests.get(url)
     data = response.json()
-    s3 = boto3.resource('s3',aws_access_key_id='{{var.value.minio_key}}', aws_secret_access_key='{{var.value.minio_secret_key}}')
+    client = Minio(
+        "admin",
+        access_key="{{var.value.minio_key}}",
+        secret_key="{{var.value.minio_secret_key}}",
+    )
     today = datetime.today().strftime('%Y-%m-%d')
-    s3object = s3.Object('stock-market', f'lz/{symbol}-{today}.json')
+    return client.put_object(
+        'stock-market',
+        f'lz/{symbol}-{today}.json',
+        bytes(json.dumps(data).encode('UTF-8')),
+        content_type='application/json'
+    )
 
-    return s3object.put(
-        Body=(bytes(json.dumps(data).encode('UTF-8')))
-)
+    
 
 with DAG(DAG_ID, default_args = default_args, schedule_interval="30 12 * * *") as dag:
     for company in ['AAPL','MSFT','GOOGL']:
