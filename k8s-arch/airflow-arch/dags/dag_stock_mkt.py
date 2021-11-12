@@ -4,6 +4,9 @@ from minio import Minio
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+import io
+import requests
+
 
 DAG_ID='stock-mkt-analytics'                                                                                                                                                                                
 
@@ -17,8 +20,8 @@ default_args = {
 
 def get_stock_mkt_data_and_send_to_s3(symbol):
     url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={{var.value.alpha_vantage_secret}}"
-    response = requests.get(url)
-    data = response.json()
+    response = requests.get(url, stream=True)
+    data = io.BytesIO(response.content)
     client = Minio(
         "admin",
         access_key="{{var.value.minio_key}}",
@@ -28,7 +31,7 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
     return client.put_object(
         'stock-market',
         f'lz/{symbol}-{today}.json',
-        bytes(json.dumps(data).encode('UTF-8')),
+        data,
         length=-1,
         content_type='application/json'
     )
