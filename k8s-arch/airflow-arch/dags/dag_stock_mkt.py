@@ -25,7 +25,7 @@ minio_id = Variable.get("minio_key")
 minio_key = Variable.get("minio_secret_key")
 
 def get_stock_mkt_data_and_send_to_s3(symbol):
-    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={api_token}"
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=5min&outputsize=full&apikey={api_token}&datatype=csv"
     response = requests.get(url, stream=True)
     data = io.BytesIO(response.content)
     content_length = data.getbuffer().nbytes
@@ -39,10 +39,10 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
     today = datetime.today().strftime('%Y-%m-%d')
     client.put_object(
         'stock-market',
-        f'lz/{symbol}-{today}.json',
+        f'lz/{symbol}-{today}.csv',
         data,
         length=content_length,
-        content_type='application/json'
+        content_type='text/csv'
     )
     return logging.info(f'Extract from {symbol} completed!!!')
 
