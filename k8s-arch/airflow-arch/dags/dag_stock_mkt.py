@@ -8,6 +8,8 @@ import io
 import requests
 import logging
 from airflow.models import Variable
+from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
+from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import SparkKubernetesSensor
 
 
 DAG_ID='stock-mkt-analytics'                                                                                                                                                                                
@@ -16,8 +18,7 @@ default_args = {
 'owner':'lucas.ferreira',
 'start_date': '2021-11-11',
 'email_on_failure': False,
-'email_on_success': False,
-'tags': ['STOCK','API-REST'],
+'email_on_success': False
 }
 
 api_token = Variable.get("alpha_vantage_secret")
@@ -48,7 +49,18 @@ def get_stock_mkt_data_and_send_to_s3(symbol):
 
     
 
-with DAG(DAG_ID, default_args = default_args, schedule_interval="30 12 * * *") as dag:
+with DAG(DAG_ID, default_args = default_args,tags=["API-REST","MINIO","PYSPARK"], schedule_interval="30 12 * * *") as dag:
+    start_spark_job = SparkKubernetesOperator(
+        task_id='start_spark_job',
+        namespace='proc-layer',
+        application_file='spark-stock-analytics.yaml',
+        kubernetes_conn_id='digitalOcean',
+        do_xcom_push=True)
+    monitor_spark_app_status = SparkKubernetesSensor(
+        task_id="monitor_spark_app_status",
+        namespace="proc-layer",
+        application_name="{{ task_instance.xcom_pull(task_ids='start_spark_job')['metadata']['name'] }}",
+        kubernetes_conn_id="digitalOcean")
     for company in ['AAPL','MSFT','GOOGL']:
         task = PythonOperator(
             task_id = f'get_stock_mkt_data_and_send_to_s3_{company}',
@@ -56,3 +68,4 @@ with DAG(DAG_ID, default_args = default_args, schedule_interval="30 12 * * *") a
             op_kwargs = {'symbol': company},
             dag = dag
         )
+        task >> start_spark_job >> monitor_spark_app_status    
