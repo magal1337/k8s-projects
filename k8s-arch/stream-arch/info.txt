@@ -1,0 +1,2 @@
+# KAFKA UI
+ helm install kafka-ui kafka-ui/kafka-ui --set envs.config.KAFKA_CLUSTERS_0_NAME=kafka-dev --set envs.config.KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=10.245.244.8:9094 -n ingestion 

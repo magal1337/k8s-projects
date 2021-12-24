@@ -1,0 +1,53 @@
+** Please be patient while the chart is being deployed **
+
+MinIO&reg; can be accessed via port  on the following DNS name from within your cluster:
+
+   minio.storage-layer.svc.cluster.local
+
+To get your credentials run:
+
+   export ROOT_USER=$(kubectl get secret --namespace storage-layer minio -o jsonpath="{.data.root-user}" | base64 --decode)
+   export ROOT_PASSWORD=$(kubectl get secret --namespace storage-layer minio -o jsonpath="{.data.root-password}" | base64 --decode)
+
+To connect to your MinIO&reg; server using a client:
+
+- Run a MinIO&reg; Client pod and append the desired command (e.g. 'admin info'):
+
+   kubectl run --namespace storage-layer minio-client \
+     --rm --tty -i --restart='Never' \
+     --env MINIO_SERVER_ROOT_USER=$ROOT_USER \
+     --env MINIO_SERVER_ROOT_PASSWORD=$ROOT_PASSWORD \
+     --env MINIO_SERVER_HOST=minio \
+     --image docker.io/bitnami/minio-client:2021.10.7-debian-10-r20 -- admin info minio
+
+To access the MinIO&reg; web UI:
+
+- Get the MinIO&reg; URL:
+
+   echo "MinIO&reg; web URL: http://127.0.0.1:9001/minio"
+   kubectl port-forward --namespace storage-layer svc/minio 9001:9001
+
+
+   ----------------------------------
+
+   USER: admin
+   PASS: AT9vt1PARatPYcXKjb9KMCxzc0Wxe4sBLC8g0lXP
+
+   --------------------------------
+
+
+    {
+    "aws_access_key_id":"admin",
+    "aws_secret_access_key": "AT9vt1PARatPYcXKjb9KMCxzc0Wxe4sBLC8g0lXP",
+    "host": "dev-magal1337-0-uqjuc:30000"
+ }
+
+
+ Access Key: 9TPEM7DXMUVP5WUWA21I
+ Secret Key: UPiPw9nhsGZ67R1smKF3ucClvMn9d1rwb9kUpNrY
+
+{
+    "aws_access_key_id":"9TPEM7DXMUVP5WUWA21I",
+    "aws_secret_access_key": "UPiPw9nhsGZ67R1smKF3ucClvMn9d1rwb9kUpNrY",
+    "host": "http://minio.storage-layer.svc.cluster.local:9000"
+ }

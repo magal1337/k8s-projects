@@ -1,0 +1,3 @@
+credentials:
+  access_key_id: AKIAJ3LIZPO2X5HPZ4HQ
+  secret_access_key: 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
