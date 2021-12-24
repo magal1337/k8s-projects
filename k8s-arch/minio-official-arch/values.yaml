@@ -65,8 +65,8 @@ priorityClassName: ""
 ## AccessKey and secretKey is generated when not set
 ## Distributed MinIO ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
 ##
-rootUser: ""
-rootPassword: ""
+rootUser: "magal1337"
+rootPassword: "datalakeops"
 
 ## Use existing Secret that store following variables:
 ##
