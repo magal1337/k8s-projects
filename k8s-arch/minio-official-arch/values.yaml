@@ -29,7 +29,7 @@ mcImage:
   pullPolicy: IfNotPresent
 
 ## minio mode, i.e. standalone or distributed or gateway.
-mode: distributed ## other supported values are "standalone", "gateway"
+mode: standalone ## other supported values are "standalone", "gateway"
 
 ## Additional labels to include with deployment or statefulset
 additionalLabels: []
@@ -102,7 +102,7 @@ pools: 1
 # Deploy if 'mode == gateway' - 4 replicas.
 gateway:
   type: "nas" # currently only "nas,gcs" are supported.
-  replicas: 4
+  replicas: 1
   gcs:
     serviceAccountFile: "" # credential JSON file of service account key (not required if using existing secret)
     projectId: "" # Google cloud project id required
