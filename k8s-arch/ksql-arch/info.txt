@@ -1,0 +1,28 @@
+## read from beginning
+
+SET 'auto.offset.reset' = 'earliest';
+SHOW TOPICS;
+PRINT 'corona-tweets' FROM BEGINNING;
+
+CREATE OR REPLACE STREAM ksql_stream_corona_tweets(
+ data STRUCT<id BIGINT, text VARCHAR>,
+ matching_rules VARCHAR
+)
+WITH (KAFKA_TOPIC='corona-tweets',VALUE_FORMAT='JSON');
+
+SHOW STREAMS;
+
+## query
+
+
+SELECT data->id AS tweet_id, ((LEN(data->text) - LEN(replace(data->text, ' ', ''))) + 1) AS word_count  FROM ksql_stream_corona_tweets emit changes li
+mit 5;
+
+CREATE OR REPLACE STREAM output_ksqldb_tweet_corona_word_count
+WITH (KAFKA_TOPIC='output-ksqldb-tweet-corona-word-count', PARTITIONS=1, VALUE_FORMAT='JSON')
+AS
+SELECT
+data->id AS tweet_id,
+((LEN(data->text) - LEN(replace(data->text, ' ', ''))) + 1) AS word_count  
+FROM ksql_stream_corona_tweets
+EMIT CHANGES;

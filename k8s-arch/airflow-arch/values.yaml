@@ -40,7 +40,7 @@ airflowHome: /opt/airflow
 defaultAirflowRepository: lferreira1337/big-data-apps
 
 # Default airflow tag to deploy
-defaultAirflowTag: "airflow2-1.0.8"
+defaultAirflowTag: "airflow2-1.1.1"
 
 # Airflow version (Used to make some decisions based on Airflow Version being deployed)
 airflowVersion: "2.1.0"
@@ -1210,8 +1210,11 @@ config:
   api:
     auth_backend: airflow.api.auth.backend.deny_all
   logging:
-    base_log_folder: /opt/airflow/logs
-    remote_logging: '{{- ternary "True" "False" .Values.elasticsearch.enabled }}'
+    #base_log_folder: /opt/airflow/logs
+    remote_logging: 'True'
+    remote_log_conn_id: 'minio-data-lake'
+    remote_base_log_folder: 's3://airflow-metadata/airflow-logs'
+    encrypt_S3_logs: 'False'
     colored_console_log: 'False'
   metrics:
     statsd_on: '{{ ternary "True" "False" .Values.statsd.enabled }}'

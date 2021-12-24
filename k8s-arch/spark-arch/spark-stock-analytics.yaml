@@ -1,0 +1,33 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: SparkApplication
+metadata:
+  name: spark-stock-analytics-bz
+  namespace: proc-layer
+spec:
+  type: Python
+  mode: cluster
+  image: "lferreira1337/big-data-apps:spark3-airflow-1.0.2"
+  imagePullPolicy: Always
+  mainApplicationFile: "local:///app/spark_stock_analytics.py"
+  sparkVersion: "3.0.0"
+  restartPolicy:
+    type: OnFailure
+    onFailureRetries: 3
+    onFailureRetryInterval: 10
+    onSubmissionFailureRetries: 5
+    onSubmissionFailureRetryInterval: 20
+  hadoopConf:
+    "fs.s3a.endpoint": "http://10.245.144.193:9000"
+  driver:
+    cores: 1
+    coreLimit: "1200m"
+    memory: "512m"
+    labels:
+      version: 3.0.0
+    serviceAccount: default
+  executor:
+    cores: 1
+    instances: 2
+    memory: "512m"
+    labels:
+      version: 3.0.0

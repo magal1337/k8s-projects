@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "optional.hpp": "c",
+        "project.h": "c"
+    },
+    "C_Cpp.intelliSenseEngineFallback": "Enabled"
+}
