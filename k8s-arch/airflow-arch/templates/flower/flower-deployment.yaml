@@ -23,7 +23,6 @@
 {{- $nodeSelector := or .Values.flower.nodeSelector .Values.nodeSelector }}
 {{- $affinity := or .Values.flower.affinity .Values.affinity }}
 {{- $tolerations := or .Values.flower.tolerations .Values.tolerations }}
-{{- $securityContext := include "airflowSecurityContext" (list . .Values.flower) }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -37,6 +36,8 @@ metadata:
 {{- with .Values.labels }}
 {{ toYaml . | indent 4 }}
 {{- end }}
+  annotations:
+    checksum/airflow-config: {{ include (print $.Template.BasePath "/configmaps/configmap.yaml") . | sha256sum }}
 spec:
   replicas: 1
   selector:
@@ -53,10 +54,8 @@ spec:
 {{- with .Values.labels }}
 {{ toYaml . | indent 8 }}
 {{- end }}
-      annotations:
-        checksum/airflow-config: {{ include (print $.Template.BasePath "/configmaps/configmap.yaml") . | sha256sum }}
-        checksum/flower-secret: {{ include (print $.Template.BasePath "/secrets/flower-secret.yaml") . | sha256sum }}
       {{- if or (.Values.airflowPodAnnotations) (.Values.flower.podAnnotations) }}
+      annotations:
       {{- mustMerge .Values.flower.podAnnotations .Values.airflowPodAnnotations | toYaml | nindent 8 }}
       {{- end }}
     spec:
@@ -68,7 +67,8 @@ spec:
 {{ toYaml $tolerations | indent 8 }}
       serviceAccountName: {{ include "flower.serviceAccountName" . }}
       restartPolicy: Always
-      securityContext: {{ $securityContext | nindent 8 }}
+      securityContext:
+        runAsUser: {{ .Values.uid }}
       {{- if or .Values.registry.secretName .Values.registry.connection }}
       imagePullSecrets:
         - name: {{ template "registry_secret" . }}

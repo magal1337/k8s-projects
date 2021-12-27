@@ -22,7 +22,6 @@
 {{- $nodeSelector := or .Values.statsd.nodeSelector .Values.nodeSelector }}
 {{- $affinity := or .Values.statsd.affinity .Values.affinity }}
 {{- $tolerations := or .Values.statsd.tolerations .Values.tolerations }}
-{{- $securityContext := include "localSecurityContext" .Values.statsd }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -64,7 +63,8 @@ spec:
       tolerations:
 {{ toYaml $tolerations | indent 8 }}
       serviceAccountName: {{ include "statsd.serviceAccountName" . }}
-      securityContext: {{ $securityContext | nindent 8 }}
+      securityContext:
+        runAsUser: {{ .Values.statsd.uid }}
       restartPolicy: Always
       {{- if or .Values.registry.secretName .Values.registry.connection }}
       imagePullSecrets:

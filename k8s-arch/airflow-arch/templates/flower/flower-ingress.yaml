@@ -40,31 +40,12 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.ingress.flower.hosts (.Values.ingress.flower.hosts | first | kindIs "string" | not) }}
-  {{- $anyTlsHosts := false -}}
-  {{- range .Values.ingress.flower.hosts }}
-  {{- if .tls }}
-  {{- if .tls.enabled }}
-  {{- $anyTlsHosts = true -}}
-  {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- if $anyTlsHosts }}
-  tls:
-  {{- range .Values.ingress.flower.hosts }}
-  {{- if .tls }}
-  {{- if .tls.enabled }}
-    - hosts:
-        - {{ .name | quote }}
-      secretName: {{ .tls.secretName }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- end }}
-  {{- else if .Values.ingress.flower.tls.enabled }}
+  {{- if .Values.ingress.flower.tls.enabled }}
   tls:
     - hosts:
+{{- if .Values.ingress.flower.tls.enabled }}
         {{- .Values.ingress.flower.hosts | default (list .Values.ingress.flower.host) | toYaml | nindent 8 }}
+{{- end }}
       secretName: {{ .Values.ingress.flower.tls.secretName }}
   {{- end }}
   rules:
@@ -87,12 +68,8 @@ spec:
             pathType: {{ $.Values.ingress.flower.pathType }}
             {{- end }}
             {{- end }}
-      {{- $hostname := . -}}
-      {{- if . | kindIs "string" | not }}
-      {{- $hostname = .name -}}
-      {{- end }}
-      {{- if $hostname }}
-      host: {{ $hostname | quote }}
+      {{- if . }}
+      host: {{ . | quote }}
       {{- end }}
     {{- end }}
   {{- if and .Values.ingress.flower.ingressClassName $apiIsStable }}
