@@ -63,7 +63,7 @@ images:
   # to run and wait for DB migrations .
   useDefaultImageForMigration: false
   # timeout (in seconds) for airflow-migrations to complete
-  migrationsWaitTimeout: 60
+  migrationsWaitTimeout: 300
   pod_template:
     repository: ~
     tag: ~
@@ -1371,7 +1371,7 @@ config:
     remote_log_conn_id: 'minio-data-lake'
     remote_base_log_folder: 's3://airflow-metadata/airflow-logs'
     encrypt_S3_logs: 'False'
-    colored_console_log: 'True'
+    colored_console_log: 'False'
   metrics:
     statsd_on: '{{ ternary "True" "False" .Values.statsd.enabled }}'
     statsd_port: 9125
