@@ -443,13 +443,13 @@ workers:
   #     cpu: 1000m
   #     memory: 1Gi
 
-  resources:
-    limits:
-     cpu: 1000m
-     memory: 3Gi
-    requests:
-     cpu: 500m
-     memory: 2Gi
+  resources: {}
+  #  limits:
+  #   cpu: 1000m
+  #   memory: 3Gi
+  #  requests:
+  #   cpu: 500m
+  #   memory: 2Gi
 
   # Grace period for tasks to finish after SIGTERM is sent from kubernetes
   terminationGracePeriodSeconds: 600
@@ -554,12 +554,12 @@ scheduler:
       maxUnavailable: 1
 
   resources:
-    limits:
-     cpu: 500m
-     memory: 1Gi
-    requests:
-     cpu: 200m
-     memory: 1Gi
+  #  limits:
+  #   cpu: 500m
+  #   memory: 1Gi
+  #  requests:
+  #   cpu: 200m
+  #   memory: 1Gi
 
   # This setting tells kubernetes that its ok to evict
   # when it wants to scale a node down.
@@ -598,13 +598,13 @@ scheduler:
     args: ["bash", "/clean-logs"]
     # Number of days to retain logs
     retentionDays: 15
-    resources:
-      limits:
-       cpu: 300m
-       memory: 512Mi
-      requests:
-       cpu: 200m
-       memory: 254Mi
+    resources: {}
+    #  limits:
+    #   cpu: 300m
+    #   memory: 512Mi
+    #  requests:
+    #   cpu: 200m
+    #   memory: 254Mi
 
 # Airflow create user job settings
 createUserJob:
@@ -722,12 +722,12 @@ webserver:
         - port: airflow-ui
 
   resources:
-     limits:
-       cpu: 2000m
-       memory: 3Gi
-     requests:
-       cpu: 1500m
-       memory: 3Gi
+  #   limits:
+  #     cpu: 2000m
+  #     memory: 3Gi
+  #   requests:
+  #     cpu: 1500m
+  #     memory: 3Gi
 
   # Create initial user.
   defaultUser:
@@ -834,13 +834,13 @@ triggerer:
     # Annotations to add to triggerer kubernetes service account.
     annotations: {}
 
-  resources:
-    limits:
-     cpu: 300m
-     memory: 512Mi
-    requests:
-     cpu: 200m
-     memory: 254Mi
+  resources: {}
+  #  limits:
+  #   cpu: 300m
+  #   memory: 512Mi
+  #  requests:
+   #  cpu: 200m
+   #  memory: 254Mi
 
   # Grace period for triggerer to finish after SIGTERM is sent from kubernetes
   terminationGracePeriodSeconds: 60
@@ -973,13 +973,13 @@ statsd:
 
   # Additional network policies as needed
   extraNetworkPolicies: []
-  resources:
-     limits:
-       cpu: 100m
-       memory: 254Mi
-     requests:
-       cpu: 100m
-       memory: 128Mi
+  resources: {}
+  #   limits:
+  #     cpu: 100m
+  #     memory: 254Mi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
 
   service:
     extraAnnotations: {}
@@ -1126,13 +1126,13 @@ redis:
     # If using a custom storageClass, pass name ref to all statefulSets here
     storageClassName:
 
-  resources:
-    limits:
-     cpu: 500m
-     memory: 1Gi
-    requests:
-     cpu: 300m
-     memory: 1Gi
+  resources: {}
+  #  limits:
+  #   cpu: 500m
+  #   memory: 1Gi
+  #  requests:
+  #   cpu: 300m
+  #   memory: 1Gi
 
   # If set use as redis secret. Make sure to also set data.brokerUrlSecretName value.
   passwordSecretName: ~
@@ -1407,13 +1407,13 @@ dags:
     uid: 65533
     extraVolumeMounts: []
     env: []
-    resources:
-      limits:
-       cpu: 1000m
-       memory: 1Gi
-      requests:
-       cpu: 500m
-       memory: 1Gi
+    resources: {}
+    #  limits:
+    #   cpu: 1000m
+    #   memory: 1Gi
+    #  requests:
+    #   cpu: 500m
+    #   memory: 1Gi
 
 logs:
   persistence:
