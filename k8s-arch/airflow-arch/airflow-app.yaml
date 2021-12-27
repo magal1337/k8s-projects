@@ -13,7 +13,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - values.yaml
+        - values2.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: orch-layer
