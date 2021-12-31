@@ -1,0 +1,3 @@
+k create clusterrolebinding cluster-admin-fission --clusterrole=cluster-admin --user=system:serviceaccount:faas-layer:fission-svc -n faas-layer
+k apply -f fission_service_account.yaml
+kubectl create -k "github.com/fission/fission/crds/v1?ref=v1.15.1"

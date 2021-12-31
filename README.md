@@ -1,2 +1,2 @@
-# k8s-projects
-Personal k8s projects
+# Ark Big Data As Service on Kubernetes
+![alt text](./images/ark_black.png)
