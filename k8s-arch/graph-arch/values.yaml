@@ -73,7 +73,7 @@ core:
   #   cpu: "100m"
   #   memory: 512Mi
 
-  standalone: false
+  standalone: true
   numberOfServers: 1
   persistentVolume:
     ## whether or not persistence is enabled
