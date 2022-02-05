@@ -10,7 +10,7 @@ image: "neo4j"
 imageTag: "4.4.3-enterprise"
 imagePullPolicy: "IfNotPresent"
 # imagePullSecret: registry-secret
-acceptLicenseAgreement: "no"
+acceptLicenseAgreement: "yes"
 podDisruptionBudget: {}
   # minAvailable: 2
   # maxUnavailable: 1
